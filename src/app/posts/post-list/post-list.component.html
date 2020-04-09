@@ -1,16 +1,17 @@
 <mat-accordion>
+	<mat-expansion-panel *ngFor="let post of posts">
+	  <mat-expansion-panel-header>
+	    <mat-panel-title>
+	      {{post.title.toUpperCase() }}
+	    </mat-panel-title>
+	  </mat-expansion-panel-header>
 
-<mat-expansion-panel *ngFor="let post of posts">
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      {{post.title.toUpperCase() }}
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-
-  <p>{{ post.content }}</p>
-
-</mat-expansion-panel>
-
+	  <p>{{ post.content }}</p>
+	  <mat-action-row>
+	    <button mat-button color="primary">Edit</button>
+	    <button mat-button color="warn">Delete</button>
+	   </mat-action-row>
+	</mat-expansion-panel>
 </mat-accordion>
 
 <p style="padding: 1rem; text-align: center; background-color: #ffc6c6; border-radius: 2px; border: 1px solid #ff0202; color: #ff0202" class="mat-body-1" *ngIf="posts.length === 0">

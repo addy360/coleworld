@@ -7,8 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'cole-world';
-  posts = []
-  postCreated(e){
-  	this.posts.push(e)
-  }
 }
