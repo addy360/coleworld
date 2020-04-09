@@ -1,0 +1,18 @@
+<mat-accordion>
+
+<mat-expansion-panel *ngFor="let post of posts">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{post.title.toUpperCase() }}
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <p>{{ post.content }}</p>
+
+</mat-expansion-panel>
+
+</mat-accordion>
+
+<p style="padding: 1rem; text-align: center; background-color: #ffc6c6; border-radius: 2px; border: 1px solid #ff0202; color: #ff0202" class="mat-body-1" *ngIf="posts.length === 0">
+	Currently no posts
+</p>
