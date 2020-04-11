@@ -1,4 +1,4 @@
-const app = require("./backend/app");
+const { app, connection } = require("./backend/app");
 const debug = require("debug")("node-angular");
 const http = require("http");
 
@@ -47,8 +47,13 @@ const port = normalizePort(process.env.PORT || "5000");
 app.set("port", port);
 
 const server = http.createServer(app);
-server.on("error", onError);
-server.on("listening", onListening);
-server.listen(port, ()=>{
-	console.log(`server listening at port ${port}`)
-});
+connection()
+.then(res=>{
+  server.on("error", onError);
+  server.on("listening", onListening);
+  server.listen(port, ()=>{
+    console.log(`server listening at port ${port}`)
+  });
+})
+.catch(err=>console.log(err))
+

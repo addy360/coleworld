@@ -1,3 +1,8 @@
 <mat-toolbar color="primary">
-  <span>Forum</span>
+  <div>
+	  <h1 [routerLink]="['/']" >Forum</h1>
+	  <ul>
+	  	<li><a mat-button routerLinkActive="mat-warn" [routerLink]="['/newpost']">new post</a></li>
+	  </ul>
+  </div>
 </mat-toolbar>
