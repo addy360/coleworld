@@ -5,7 +5,9 @@
 	      {{post.title.toUpperCase() }}
 	    </mat-panel-title>
 	  </mat-expansion-panel-header>
-
+	  <div class="img-div">
+	  	<img [src]="post.imagePath" [alt]="post.title">
+	  </div>
 	  <p>{{ post.content }}</p>
 	  <mat-action-row>
 	    <button mat-button [routerLink]="['/editpost', post.id]" color="primary">Edit</button>

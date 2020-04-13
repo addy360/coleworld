@@ -24,15 +24,17 @@ export class PostService{
 		return this.httpClient.get<{message:string, post:Post}>(`http://localhost:5000/api/posts/${id}`)
 	}
 
-	addPost(title:string, content:string){
-		const post:Post={
-			id:undefined,title,content
-		}
-		this.httpClient.post<{message:string,data:{id:string,title:string,content:string}}>('http://localhost:5000/api/posts',post)
+	addPost(title:string, content:string, image:File){
+ 
+		const formData = new FormData()
+		formData.append("title",title)
+		formData.append("content",content)
+		formData.append("image",image, title)
+		this.httpClient.post<{message:string,data:{id:string,title:string,content:string, imagePath:string}}>('http://localhost:5000/api/posts',formData)
 		.subscribe(data=>{
-			const { message, data:{id, title, content} } = data
+			const { message, data:{id, title, content, imagePath} } = data
 			const postObj = {
-				id,title,content
+				id,title,content,imagePath
 			}
 			this.posts.push(postObj)
 			this.postAdded.next([...this.posts])
@@ -41,7 +43,21 @@ export class PostService{
 	}
 
 	updatePost(post:Post){
-		this.httpClient.put(`http://localhost:5000/api/posts`,post)
+		const { title , id, content, imagePath } = post
+		let formData;
+		if (typeof(imagePath) === 'object') { 
+			formData = new FormData()
+			formData.append('id',id)
+			formData.append('title',title)
+			formData.append('content',content)
+			formData.append('image',imagePath)
+		} else {
+			formData = {
+				...post
+			}
+		}
+		console.dir(formData)
+		this.httpClient.put(`http://localhost:5000/api/posts`,formData)
 		.subscribe(data=>{
 			this.router.navigate(['/'])
 		})

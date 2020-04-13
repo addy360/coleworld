@@ -9,6 +9,7 @@ exports.getPosts = (req, res, next)=>{
 			post.id = p._id
 			post.title = p.title
 			post.content = p.content
+			post.imagePath = p.imagePath
 			posts.push(post)
 		})
 		res.status(200).json({message:"Posts fetched successfully",posts})
@@ -24,10 +25,10 @@ exports.getPost = (req, res, next)=>{
 	const { id } = req.params
 	Post.findById(id)
 	.then(data=>{
-		const { _id, title, content } = data
+		const { _id, title, content, imagePath } = data
 		const post = {
 			id:_id,
-			title, content
+			title, content, imagePath
 		}
 		res.status(200).json({message:"Post Found", post})
 	})
@@ -38,8 +39,10 @@ exports.getPost = (req, res, next)=>{
 
 exports.postPosts = (req, res, next)=>{
 	const { title, content } = req.body
+	const {filename} = req.file
+	const url = `${req.protocol}://${req.get('host')}`
 	const post = new Post({
-		title, content
+		title, content, imagePath:`${url}/uploads/${filename}`
 	})
 	post.save()
 	.then(data=>{
@@ -47,6 +50,7 @@ exports.postPosts = (req, res, next)=>{
 			id:data._id,
 			title:data.title,
 			content:data.content,
+			imagePath:data.imagePath,
 		}
 		res.status(201).json({message:"Posts saved successfully", data:postObj})
 	})
@@ -57,8 +61,13 @@ exports.postPosts = (req, res, next)=>{
 }
 
 exports.updatePost = (req, res, next)=>{
-	const { id, title, content } = req.body
-	Post.findOneAndUpdate({_id:id},{title,content})
+	let filename = null
+	if(req.file){
+		filename = req.file.filename
+	}
+	const url = `${req.protocol}://${req.get('host')}`
+	const { id, title, content, imagePath } = req.body
+	Post.findOneAndUpdate({_id:id},{title,content, imagePath:filename ? `${url}/uploads/${filename}` : imagePath})
 	.then(data=>{
 		res.status(200).json({message:"Post updated successfully"})
 	})

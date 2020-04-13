@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit } from '@angular/core'
 import { ActivatedRoute, ParamMap } from '@angular/router'
-import { NgForm } from '@angular/forms'
+import { FormGroup, FormControl, Validators } from '@angular/forms'
 
 import{ Post } from '../post.model'
 import{ PostService } from '../post.service'
@@ -14,11 +14,18 @@ export class PostCreateComponent implements OnInit{
 	constructor(private postservice:PostService, private activeRoute:ActivatedRoute){}
 	content:string
 	title:string
+	form:FormGroup
+	imagePreview:string | ArrayBuffer
 	public loading:boolean = false
 	private mode:string 
 	private postId:string = null
 	post: Post;
 	ngOnInit(){
+		this.form = new FormGroup({
+			'title':new FormControl(null,{validators:[Validators.required, Validators.minLength(4)]}),
+			'content':new FormControl(null,{validators:[Validators.required]}),
+			'image':new FormControl(null,{validators:[Validators.required]}),
+		})
 		this.activeRoute.paramMap.subscribe((pMap:ParamMap)=>{
 			this.mode = pMap.has('id') ? 'edit': 'create'
 			if(this.mode === 'edit'){
@@ -29,7 +36,8 @@ export class PostCreateComponent implements OnInit{
 					const { message, post } = data
 					this.post = post
 					this.loading=false
-					console.log(this.post)
+					const { title, content, imagePath } = this.post
+					this.form.setValue({title, content, image:imagePath})
 				})
 			} 
 
@@ -38,23 +46,37 @@ export class PostCreateComponent implements OnInit{
 	getPost(){
 		return this.postservice.getPost(this.postId)
 	}
-	onAddPost=(formData:NgForm)=>{
-		if(formData.invalid) return
-		const title = formData.value.title
-		const content = formData.value.content
+	onAddPost=()=>{
+		if(this.form.invalid) return
+		const title = this.form.value.title
+		const content = this.form.value.content
+		const image = this.form.value.image
 		this.loading = true
 		if (this.mode === "create"){
-			this.postservice.addPost(title, content)
+			this.postservice.addPost(title, content, image)
 			this.loading = false
 		} 
 		else {
 			let post:Post = {
 				id:this.postId,
-				title, content
+				title, content, imagePath:image
 			}
 			this.postservice.updatePost(post)
 			this.loading = false
 		}
-		formData.resetForm()
+		this.form.reset()
+	}
+
+	onImage(e:Event){
+		const { files } = (e.target as HTMLInputElement)
+		const file = files[0]
+		this.form.patchValue({image:file})
+		this.form.get('image').updateValueAndValidity()
+		const reader = new FileReader()
+		reader.onload = ()=>{
+			this.imagePreview = reader.result
+		}
+
+		reader.readAsDataURL(file)
 	}
 }
