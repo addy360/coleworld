@@ -1,0 +1,15 @@
+mat-form-field, input{
+	width: 100%;
+	display: block
+}
+
+mat-card{
+	max-width: 20rem;
+	display: block;
+	margin: 10rem auto 0;
+}
+
+mat-card form button{
+	display: block;
+	width: 100%
+}

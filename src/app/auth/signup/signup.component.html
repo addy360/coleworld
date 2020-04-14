@@ -1,0 +1,14 @@
+<mat-card >
+	<form (submit)="onSubmit(formData)" #formData = "ngForm" >
+		<mat-form-field appearance="outline">
+			<mat-label>E-mail Address</mat-label>
+			<input matInput ngModel name="email" required email type="email">
+		</mat-form-field>
+		<mat-form-field appearance="outline">
+			<mat-label>Password</mat-label>
+			<input matInput ngModel name="password" required type="password" >
+		</mat-form-field>	
+		<button [disabled]="formData.invalid"  mat-raised-button color="primary" type="submit">Register</button>
+	</form>
+</mat-card>
+
