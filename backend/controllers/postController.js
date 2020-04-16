@@ -42,10 +42,11 @@ exports.postPosts = (req, res, next)=>{
 	const {filename} = req.file
 	const url = `${req.protocol}://${req.get('host')}`
 	const post = new Post({
-		title, content, imagePath:`${url}/uploads/${filename}`
+		title, content, imagePath:`${url}/uploads/${filename}`, user:req.userId
 	})
 	post.save()
 	.then(data=>{
+		console.log(data)
 		const postObj = {
 			id:data._id,
 			title:data.title,
