@@ -62,7 +62,6 @@ export class PostCreateComponent implements OnInit{
 			}
 			this.postservice.updatePost(post)
 		}
-		console.log(this.loading)
 		this.form.reset()
 	}
 

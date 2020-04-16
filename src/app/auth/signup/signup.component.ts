@@ -21,7 +21,6 @@ export class SignupComponent{
 		},
 		err=>{
 			this.loading=false
-			console.log(err.error.message)
 			this.router.navigate(['/register'])
 		})
 	}

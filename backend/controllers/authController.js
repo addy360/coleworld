@@ -15,7 +15,7 @@ exports.postLogin = (req, res, next)=>{
 				  	email:user.email, id:user._id
 				  }
 				}, 
-			'superSecretWord', 
+			process.env.JWT_KEY, 
 			{ expiresIn: '1h' },
 			(err, token)=>{
 				if (err) return res.status(500).json({message:"Server Error"})

@@ -4,7 +4,7 @@ const Post = require('../models/Post')
 exports.isAuth = (req, res, next)=>{
 	if(req.headers['x-auth-token'] === '') return res.status(401).json({message:"No token. Not authorized"})
 	const token = req.headers['x-auth-token']
-	jwt.verify(token, 'superSecretWord', (err, decoded)=> {
+	jwt.verify(token, process.env.JWT_KEY, (err, decoded)=> {
 	  if (err)  return res.status(401).json({message:"No token. Not authorized"})
 	  const { user:{ id } } = decoded
 	  req.userId = id

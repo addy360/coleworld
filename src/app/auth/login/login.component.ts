@@ -23,7 +23,6 @@ export class LoginComponent{
 		},
 		err=>{
 			this.loading = false
-			console.log(err.error.message)
 		})
 
 	}

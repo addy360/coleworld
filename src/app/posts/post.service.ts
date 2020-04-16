@@ -5,6 +5,9 @@ import { Subject } from 'rxjs'
 
 import { Post } from './post.model'
 
+import { environment } from '../../environments/environment'
+
+const POSTS_BASE_URL = `${environment.baseUrl}/posts`
 @Injectable({
 	providedIn:'root'
 })
@@ -13,7 +16,7 @@ export class PostService{
 	private posts:Post[]=[]
 	public postAdded = new Subject<Post[]>()
 	getPosts(){
-		this.httpClient.get<{message:string, posts:Post[]}>('http://localhost:5000/api/posts')
+		this.httpClient.get<{message:string, posts:Post[]}>(POSTS_BASE_URL)
 		.subscribe(data=>{
 			this.posts = data.posts
 			this.postAdded.next([...this.posts])
@@ -21,7 +24,7 @@ export class PostService{
 	}
 
 	getPost(id){
-		return this.httpClient.get<{message:string, post:Post}>(`http://localhost:5000/api/posts/${id}`)
+		return this.httpClient.get<{message:string, post:Post}>(`${POSTS_BASE_URL}/${id}`)
 	}
 
 	addPost(title:string, content:string, image:File){
@@ -29,7 +32,7 @@ export class PostService{
 		formData.append("title",title)
 		formData.append("content",content)
 		formData.append("image",image, title)
-		this.httpClient.post<{message:string,data:{id:string,title:string,content:string, imagePath:string}}>('http://localhost:5000/api/posts',formData)
+		this.httpClient.post<{message:string,data:{id:string,title:string,content:string, imagePath:string}}>(POSTS_BASE_URL,formData)
 		.subscribe(data=>{
 			const { message, data:{id, title, content, imagePath} } = data
 			const postObj = {
@@ -55,7 +58,7 @@ export class PostService{
 				...post
 			}
 		}
-		this.httpClient.put(`http://localhost:5000/api/posts`,formData)
+		this.httpClient.put(`${POSTS_BASE_URL}`,formData)
 		.subscribe(data=>{
 			this.router.navigate(['/'])
 		},
@@ -65,7 +68,7 @@ export class PostService{
 	}
 
 	deletePost(id:string){
-		this.httpClient.delete(`http://localhost:5000/api/posts/${id}`)
+		this.httpClient.delete(`${POSTS_BASE_URL}/${id}`)
 		.subscribe(data=>{
 			this.posts = this.posts.filter(p=>p.id!==id)
 			this.postAdded.next([...this.posts])

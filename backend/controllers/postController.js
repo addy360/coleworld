@@ -46,7 +46,6 @@ exports.postPosts = (req, res, next)=>{
 	})
 	post.save()
 	.then(data=>{
-		console.log(data)
 		const postObj = {
 			id:data._id,
 			title:data.title,
