@@ -54,7 +54,6 @@ export class PostCreateComponent implements OnInit{
 		this.loading = true
 		if (this.mode === "create"){
 			this.postservice.addPost(title, content, image)
-			this.loading = false
 		} 
 		else {
 			let post:Post = {
@@ -62,8 +61,8 @@ export class PostCreateComponent implements OnInit{
 				title, content, imagePath:image
 			}
 			this.postservice.updatePost(post)
-			this.loading = false
 		}
+		console.log(this.loading)
 		this.form.reset()
 	}
 

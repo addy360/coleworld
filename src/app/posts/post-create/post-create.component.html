@@ -1,5 +1,5 @@
-<mat-card *ngIf="!loading">
-	<form (submit)="onAddPost()" [formGroup]= "form" >
+<mat-card>
+	<form  *ngIf="!loading" (submit)="onAddPost()" [formGroup]= "form" >
 		<mat-form-field appearance="outline">
 			<mat-label>post title</mat-label>
 			<input matInput formControlName = 'title' >
@@ -17,6 +17,6 @@
 		</div>
 		<button  mat-raised-button color="primary" type="submit">Save</button>
 	</form>
+	<app-loader *ngIf="loading"></app-loader>
 </mat-card>
-<app-loader *ngIf="loading"></app-loader>
 
