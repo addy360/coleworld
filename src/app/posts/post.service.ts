@@ -55,9 +55,11 @@ export class PostService{
 				...post
 			}
 		}
-		console.dir(formData)
 		this.httpClient.put(`http://localhost:5000/api/posts`,formData)
 		.subscribe(data=>{
+			this.router.navigate(['/'])
+		},
+		err=>{
 			this.router.navigate(['/'])
 		})
 	}
@@ -67,6 +69,9 @@ export class PostService{
 		.subscribe(data=>{
 			this.posts = this.posts.filter(p=>p.id!==id)
 			this.postAdded.next([...this.posts])
+		},
+		err=>{
+			this.router.navigate(['/'])
 		})
 	}
 }
