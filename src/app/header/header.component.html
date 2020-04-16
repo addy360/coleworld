@@ -2,9 +2,10 @@
   <div>
 	  <h1 [routerLink]="['/']" >Forum</h1>
 	  <ul>
-	  	<li><a mat-button routerLinkActive="mat-warn" [routerLink]="['/newpost']">new post</a></li>
-	  	<li><a mat-button routerLinkActive="mat-warn" [routerLink]="['/login']">Login</a></li>
-	  	<li><a mat-button routerLinkActive="mat-warn" [routerLink]="['/register']">Register</a></li>
+	  	<li *ngIf="isAuthenticated"><a mat-button routerLinkActive="mat-warn" [routerLink]="['/newpost']">new post</a></li>
+	  	<li *ngIf="!isAuthenticated"><a mat-button routerLinkActive="mat-warn" [routerLink]="['/login']">Login</a></li>
+	  	<li *ngIf="!isAuthenticated"><a mat-button routerLinkActive="mat-warn" [routerLink]="['/register']">Register</a></li>
+	  	<li *ngIf="isAuthenticated"><button mat-button (click)="logoutUser()">Logout</button></li>
 	  </ul>
   </div>
 </mat-toolbar>

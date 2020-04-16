@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const { getPosts, postPosts, deletePost, updatePost, getPost } = require('../controllers/postController')
 const multer = require('multer')
+const { isAuth } = require('../middlewares/isAuth')
 
 const MIME_TYPES_MAP = {
 	'image/png':'png',
@@ -23,9 +24,9 @@ const storage = multer.diskStorage({
 
 router.get('/',getPosts)
 router.get('/:id',getPost)
-router.post('/',multer({storage:storage}).single('image'),postPosts)
+router.post('/', isAuth ,multer({storage:storage}).single('image'),postPosts)
 router.put('/',multer({storage:storage}).single('image'), updatePost)
-router.delete('/:id',deletePost)
+router.delete('/:id', isAuth ,deletePost)
 
 
 

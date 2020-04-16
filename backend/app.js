@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const path = require('path')
 
 const postRouter = require('./routes/postRoutes')
+const authRouter = require('./routes/authRoutes')
 const app = express()
 app.use(cors())
 app.use(express.json())
@@ -20,6 +21,7 @@ const connection = ()=>{
 const PORT = process.env.PORT || 5000
 
 app.use('/api/posts', postRouter)
+app.use('/api/auth', authRouter)
 app.use('/uploads',express.static(path.join('backend/uploads')))
 
 

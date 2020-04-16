@@ -25,7 +25,6 @@ export class PostService{
 	}
 
 	addPost(title:string, content:string, image:File){
- 
 		const formData = new FormData()
 		formData.append("title",title)
 		formData.append("content",content)

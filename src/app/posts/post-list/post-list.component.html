@@ -9,9 +9,9 @@
 	  	<img [src]="post.imagePath" [alt]="post.title">
 	  </div>
 	  <p>{{ post.content }}</p>
-	  <mat-action-row>
+	  <mat-action-row *ngIf="isAuthenticated">
 	    <button mat-button [routerLink]="['/editpost', post.id]" color="primary">Edit</button>
-	    <button mat-button (click)="onDeletePost(post.id)" color="warn">Delete</button>
+	    <button  mat-button (click)="onDeletePost(post.id)" color="warn">Delete</button>
 	   </mat-action-row>
 	</mat-expansion-panel>
 </mat-accordion>
